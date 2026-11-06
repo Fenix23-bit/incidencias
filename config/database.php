@@ -3,7 +3,7 @@
 
 $host = '127.0.0.1';
 $port = '3307'; // Puerto configurado en XAMPP
-$dbname = 'portal_asesorias';
+$dbname = 'portal_reportes';
 $username = 'root'; // Usuario por defecto en XAMPP
 $password = '';     // Contraseña por defecto en XAMPP
 

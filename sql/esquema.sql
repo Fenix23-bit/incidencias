@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS usuario (
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(150) NOT NULL UNIQUE, -- Garantiza correo único
     password_hash VARCHAR(255) NOT NULL, -- Guardará el hash seguro
-    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     rol ENUM('Reportante', 'Administrador') DEFAULT 'Reportante'
 ) ENGINE=InnoDB;
 
@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS reporte (
     estado ENUM('Pendiente', 'Atendida', 'Cancelada') DEFAULT 'Pendiente', -- Estado inicial Pendiente
     fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_solicitudes_estudiantes 
-        FOREIGN KEY (estudiante_id) 
-        REFERENCES estudiantes(id) 
+        FOREIGN KEY (usuario_id) 
+        REFERENCES usuario(id) 
         ON DELETE CASCADE 
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
