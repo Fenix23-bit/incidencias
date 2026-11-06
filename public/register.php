@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 2. Limpiar y capturar entradas
     $nombre = trim($_POST['nombre'] ?? '');
     $correo = trim($_POST['correo'] ?? '');
+    $rol = trim($_POST['rol'] ??'');
     $password = $_POST['password'] ?? '';
     $password_confirm = $_POST['password_confirm'] ?? '';
 
@@ -27,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errores[] = 'La contraseña debe tener al menos 6 caracteres.';
     } else {
         // 4. Verificar correo único en la base de datos
-        $stmt = $pdo->prepare('SELECT id FROM estudiantes WHERE correo = :correo');
+        $stmt = $pdo->prepare('SELECT id FROM usuario WHERE correo = :correo');
         $stmt->execute([':correo' => $correo]);
 
         if ($stmt->fetch()) {
@@ -36,9 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // 5. Guardar contraseña mediante Hash Seguro
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-            $stmtInsert = $pdo->prepare('INSERT INTO estudiantes (nombre, correo, password_hash) VALUES (:nombre, :correo, :hash)');
+            $stmtInsert = $pdo->prepare('INSERT INTO usuario (nombre, rol, correo, password_hash) VALUES (:nombre, :rol, :correo, :hash)');
             $resultado = $stmtInsert->execute([
                 ':nombre' => $nombre,
+                ':rol' => $rol,
                 ':correo' => $correo,
                 ':hash'   => $password_hash
             ]);
@@ -93,6 +95,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <input class="form-control" id="inputNombre" name="nombre" type="text" placeholder="Tu Nombre Completo" required value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>" />
                                             <label for="inputNombre">Nombre completo</label>
                                         </div>
+
+                                        <div class="form-floating mb-3">
+    <select class="form-select" id="inputRol" name="rol" required>
+        <option value="" disabled <?= !isset($_POST['rol']) ? 'selected' : '' ?>>Selecciona un rol</option>
+        <option value="a" <?= (isset($_POST['rol']) && $_POST['rol'] === 'Reportante') ? 'selected' : '' ?>>Reportante</option>
+        <option value="b" <?= (isset($_POST['rol']) && $_POST['rol'] === 'Administrador') ? 'selected' : '' ?>>Administrador</option>
+    </select>
+    <label for="inputRol">Rol</label>
+</div>
 
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="inputCorreo" name="correo" type="email" placeholder="nombre@ejemplo.com" required value="<?= htmlspecialchars($_POST['correo'] ?? '') ?>" />

@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Por favor ingresa tu correo y contraseña.';
     } else {
         // Consulta del usuario mediante consulta preparada (PDO)
-        $stmt = $pdo->prepare('SELECT id, nombre, correo, password_hash FROM estudiantes WHERE correo = :correo');
+        $stmt = $pdo->prepare('SELECT id, nombre, correo, password_hash FROM usuario WHERE correo = :correo');
         $stmt->execute([':correo' => $correo]);
         $estudiante = $stmt->fetch();
 

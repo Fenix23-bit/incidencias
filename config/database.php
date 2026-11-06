@@ -2,8 +2,8 @@
 // config/database.php
 
 $host = '127.0.0.1';
-$port = '3307'; // Puerto configurado en XAMPP
-$dbname = 'portal_reportes';
+$port = '3306'; // Puerto configurado en XAMPP
+$dbname = 'portal_incidencias';
 $username = 'root'; // Usuario por defecto en XAMPP
 $password = '';     // Contraseña por defecto en XAMPP
 
