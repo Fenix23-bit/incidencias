@@ -1,32 +1,32 @@
 -- Crear la base de datos
-CREATE DATABASE IF NOT EXISTS portal_incidencias
+CREATE DATABASE IF NOT EXISTS portal_asesorias
 CHARACTER SET utf8mb4 
 COLLATE utf8mb4_unicode_ci;
 
-USE portal_incidencias;
+USE portal_asesorias;
 
--- 1. Tabla de usuario
-CREATE TABLE IF NOT EXISTS usuario (
+-- 1. Tabla de Estudiantes
+CREATE TABLE IF NOT EXISTS estudiantes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(150) NOT NULL UNIQUE, -- Garantiza correo único
+    rol ENUM('Reportante', 'Administrador') DEFAULT 'Reportante',
     password_hash VARCHAR(255) NOT NULL, -- Guardará el hash seguro
-    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
-    rol ENUM('Reportante', 'Administrador') DEFAULT 'Reportante'
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
 -- 2. Tabla de Solicitudes
-CREATE TABLE IF NOT EXISTS reporte (
+CREATE TABLE IF NOT EXISTS solicitudes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    asunto VARCHAR(100) NOT NULL,
+    estudiante_id INT NOT NULL,
+    materia VARCHAR(100) NOT NULL,
     descripcion TEXT NOT NULL,
-    prioridad ENUM('Baja', 'Media', 'Alta'),
+    prioridad ENUM('Baja', 'Media', 'Alta') DEFAULT 'Media',
     estado ENUM('Pendiente', 'Atendida', 'Cancelada') DEFAULT 'Pendiente', -- Estado inicial Pendiente
     fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_solicitudes_estudiantes 
-        FOREIGN KEY (usuario_id) 
-        REFERENCES usuario(id) 
+        FOREIGN KEY (estudiante_id) 
+        REFERENCES estudiantes(id) 
         ON DELETE CASCADE 
         ON UPDATE CASCADE
 ) ENGINE=InnoDB;
